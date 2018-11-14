@@ -9,7 +9,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,15 +37,6 @@ public class FinancialServiceExceptionHandler {
     public R badRequest(BindException e) {
         logger.error("请求参数绑定错误,message ={}", e.getMessage());
         return R.error(ResponseEnums.BAD_REQUEST.getCode(), ResponseEnums.BAD_REQUEST.getMsg());
-    }
-
-    /**
-     * 404错误异常的捕获
-     */
-    @ExceptionHandler(value = {NoHandlerFoundException.class})
-    public R badRequestNotFound(NoHandlerFoundException e) {
-        logger.error("找不到请求路径 ,message ={}", e.getMessage());
-        return R.error(ResponseEnums.NOT_FOUND.getCode(), ResponseEnums.NOT_FOUND.getMsg());
     }
 
     @ExceptionHandler(DuplicateKeyException.class)

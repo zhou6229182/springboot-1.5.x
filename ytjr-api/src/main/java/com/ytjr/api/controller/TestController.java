@@ -1,14 +1,13 @@
 package com.ytjr.api.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.ytjr.entity.api.UserEntity;
+import com.ytjr.api.utils.R;
 import com.ytjr.iservice.api.IUserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -18,14 +17,14 @@ public class TestController {
     private IUserService userService;
 
     @GetMapping("/name")
-    public List<UserEntity> getList() {
-        return userService.queryList();
+    public R getList() {
+        return R.ok().put("userlist", userService.queryList());
     }
 
     @GetMapping("/delete")
-    public String delete() {
+    public R delete() {
         userService.deleteCache();
-        return "result";
+        return R.ok();
     }
 
     @GetMapping("/nowtime")
