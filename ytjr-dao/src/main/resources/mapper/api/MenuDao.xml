@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ytjr.dao.api.MenuDao">
+
+    <resultMap type="com.ytjr.entity.api.MenuEntity" id="MenuMap">
+        <result property="id" column="menu_id"/>
+        <result property="url" column="url"/>
+        <result property="name" column="menu_name"/>
+        <result property="parentId" column="parentid"/>
+    </resultMap>
+
+    <resultMap id="RoleMap" type="com.ytjr.entity.api.RoleEntity">
+        <result property="id" column="role_id"/>
+        <result property="name" column="role_name"/>
+    </resultMap>
+
+    <resultMap type="com.ytjr.entity.api.MenuEntity" id="lazyLoadRoles" extends="MenuMap">
+        <collection property="roles" ofType="com.ytjr.entity.api.RoleEntity"
+                    select="com.ytjr.dao.api.MenuDao.getRolesByMenuId"
+                    column="{menuId=menu_id}"/>
+    </resultMap>
+
+    <select id="getAllMenu" resultMap="lazyLoadRoles">
+        select
+          menu_id,
+          url,
+          menu_name,
+          parentid
+        from ytjr_menu
+    </select>
+
+    <select id="getRolesByMenuId" resultMap="RoleMap">
+        SELECT
+          r.*
+        FROM ytjr_menu_role mr,ytjr_role r
+        where mr.role_id = r.role_id AND mr.menu_id = #{menuId}
+    </select>
+</mapper>

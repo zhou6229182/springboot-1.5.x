@@ -1,14 +1,10 @@
 package com.ytjr.iservice.api;
 
-import com.ytjr.entity.api.UserEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Date;
-import java.util.List;
 
-public interface IUserService {
-    UserEntity queryObject();
-
-    List<UserEntity> queryList();
+public interface IUserService extends UserDetailsService {
 
     void deleteCache();
 

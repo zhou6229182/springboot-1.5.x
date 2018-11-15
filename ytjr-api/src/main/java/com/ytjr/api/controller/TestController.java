@@ -16,11 +16,6 @@ public class TestController {
     @Reference(url = "127.0.0.1:20880")
     private IUserService userService;
 
-    @GetMapping("/name")
-    public R getList() {
-        return R.ok().put("userlist", userService.queryList());
-    }
-
     @GetMapping("/delete")
     public R delete() {
         userService.deleteCache();

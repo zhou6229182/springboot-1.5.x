@@ -3,23 +3,41 @@
 
 <mapper namespace="com.ytjr.dao.api.UserDao">
 
-    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.ytjr.entity.api.UserEntity" id="UserMap">
-        <result property="id" column="id"/>
-        <result property="name" column="name"/>
+        <result property="id" column="user_id"/>
+        <result property="name" column="real_name"/>
+        <result property="password" column="password"/>
+        <result property="username" column="username"/>
+        <result property="enable" column="enable"/>
         <result property="birthday" column="birthday"/>
     </resultMap>
 
-    <select id="queryObject" resultMap="UserMap">
-        select * from ytjr_user where id = 1
+    <resultMap id="RoleMap" type="com.ytjr.entity.api.RoleEntity">
+        <result property="id" column="role_id"/>
+        <result property="name" column="role_name"/>
+    </resultMap>
+
+    <resultMap type="com.ytjr.entity.api.UserEntity" id="lazyLoadRoles" extends="UserMap">
+        <collection property="roles" ofType="com.ytjr.entity.api.RoleEntity"
+                    select="com.ytjr.dao.api.UserDao.getRolesByUserId"
+                    column="userId=user_id"/>
+    </resultMap>
+
+    <select id="getUserByUsername" resultMap="lazyLoadRoles">
+        select
+          user_id,
+          real_name,
+          password,
+          username,
+          enable,
+          birthday
+        from ytjr_user where username = #{username}
     </select>
 
-    <select id="queryList" resultMap="UserMap">
-        select * from ytjr_user
-    </select>
-
-    <select id="queryCount" resultMap="UserMap">
-        select count(1) from ytjr_user
+    <select id="getRolesByUserId" resultMap="RoleMap">
+        SELECT r.*
+        FROM ytjr_user_role ur,ytjr_role r
+        where ur.role_id = r.role_id AND ur.user_id = #{userId}
     </select>
 
 </mapper>
