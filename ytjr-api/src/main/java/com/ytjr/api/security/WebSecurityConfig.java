@@ -84,7 +84,7 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
             httpServletResponse.setContentType("application/json;charset=utf-8");
             PrintWriter out = httpServletResponse.getWriter();
             ObjectMapper objectMapper = new ObjectMapper();
-            String s = objectMapper.writeValueAsString(R.ok().put("user", UserUtils.getCurrentHr()));
+            String s = objectMapper.writeValueAsString(R.ok().put("user", UserUtils.getCurrentUser()));
             out.write(s);
             out.flush();
             out.close();
