@@ -20,7 +20,7 @@
     <resultMap type="com.ytjr.entity.api.UserEntity" id="lazyLoadRoles" extends="UserMap">
         <collection property="roles" ofType="com.ytjr.entity.api.RoleEntity"
                     select="com.ytjr.dao.api.UserDao.getRolesByUserId"
-                    column="userId=user_id"/>
+                    column="{userId=user_id}"/>
     </resultMap>
 
     <select id="getUserByUsername" resultMap="lazyLoadRoles">
@@ -39,5 +39,4 @@
         FROM ytjr_user_role ur,ytjr_role r
         where ur.role_id = r.role_id AND ur.user_id = #{userId}
     </select>
-
 </mapper>

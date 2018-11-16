@@ -108,9 +108,4 @@ public class UserEntity implements Serializable, UserDetails {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
-
-    @Override
-    public String toString() {
-        return "name:" + this.name;
-    }
 }

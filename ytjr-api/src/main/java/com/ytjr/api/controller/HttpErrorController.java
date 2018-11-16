@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * error控制器
+ * 替换默认的 http status 错误页面
+ */
 @RestController
 public class HttpErrorController implements ErrorController {
 

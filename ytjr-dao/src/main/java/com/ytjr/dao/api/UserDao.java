@@ -11,4 +11,5 @@ public interface UserDao {
     UserEntity getUserByUsername(@Param("username") String username);
 
     List<RoleEntity> getRolesByUserId(@Param("userId") String userId);
+
 }

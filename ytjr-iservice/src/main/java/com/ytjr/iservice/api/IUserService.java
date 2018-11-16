@@ -9,4 +9,5 @@ public interface IUserService extends UserDetailsService {
     void deleteCache();
 
     Date nowTime();
+
 }
