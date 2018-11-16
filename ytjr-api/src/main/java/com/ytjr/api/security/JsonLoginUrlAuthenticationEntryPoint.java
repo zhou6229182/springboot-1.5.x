@@ -3,6 +3,7 @@ package com.ytjr.api.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ytjr.api.utils.R;
 import com.ytjr.common.enums.ResponseEnums;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ public class JsonLoginUrlAuthenticationEntryPoint implements AuthenticationEntry
 
     private ObjectMapper om;
 
+    @Autowired
     public JsonLoginUrlAuthenticationEntryPoint(ObjectMapper om) {
         this.om = om;
     }
