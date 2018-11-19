@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ytjr.api.utils.R;
 import com.ytjr.common.enums.ResponseEnums;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class AuthenticationAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException {
-        httpServletResponse.setContentType("application/json;charset=utf-8");
+        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         PrintWriter out = httpServletResponse.getWriter();
         out.write(om.writeValueAsString(R.error(ResponseEnums.SC_FORBIDDEN)));
         out.flush();

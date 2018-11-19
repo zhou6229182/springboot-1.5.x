@@ -9,6 +9,7 @@ import com.ytjr.iservice.api.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
@@ -77,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/login.html").loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
                 .permitAll()
                 .failureHandler((httpServletRequest, httpServletResponse, e) -> {
-                    httpServletResponse.setContentType("application/json;charset=utf-8");
+                    httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     PrintWriter out = httpServletResponse.getWriter();
                     if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
                         out.write(om.writeValueAsString(R.error(ResponseEnums.INVALID_USER_OR_PASSWORD)));
@@ -90,7 +91,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     out.close();
                 })
                 .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
-                    httpServletResponse.setContentType("application/json;charset=utf-8");
+                    httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     PrintWriter out = httpServletResponse.getWriter();
                     String s = om.writeValueAsString(R.ok().put("user", UserUtils.getCurrentUser()));
                     out.write(s);

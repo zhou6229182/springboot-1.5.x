@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ytjr.api.utils.R;
 import com.ytjr.common.enums.ResponseEnums;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -30,7 +31,7 @@ public class JsonLoginUrlAuthenticationEntryPoint implements AuthenticationEntry
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         if (isAjaxRequest(request)) {//判断未登录并且为ajax请求时返回JSON
-            response.setContentType("application/json;charset=utf-8");
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             PrintWriter out = response.getWriter();
             out.write(om.writeValueAsString(R.error(ResponseEnums.NOLOGIN)));
             out.flush();
