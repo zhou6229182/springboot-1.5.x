@@ -6,9 +6,10 @@ import com.ytjr.common.enums.ResponseEnums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,13 +20,15 @@ public class JsonLoginUrlAuthenticationEntryPoint implements AuthenticationEntry
 
     private ObjectMapper om;
 
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
     @Autowired
     public JsonLoginUrlAuthenticationEntryPoint(ObjectMapper om) {
         this.om = om;
     }
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         if (isAjaxRequest(request)) {//判断未登录并且为ajax请求时返回JSON
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
@@ -33,7 +36,7 @@ public class JsonLoginUrlAuthenticationEntryPoint implements AuthenticationEntry
             out.flush();
             out.close();
         } else {
-            response.sendRedirect("/login.html");
+            redirectStrategy.sendRedirect(request, response, "/login.html");
         }
     }
 

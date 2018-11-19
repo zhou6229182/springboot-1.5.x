@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/login.html", "/index.html", "/static/**");
     }
 
@@ -72,7 +72,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         o.setAccessDecisionManager(urlAccessDecisionManager);
                         return o;
                     }
-<<<<<<< HEAD:ytjr-api/src/main/java/com/ytjr/api/security/webSecurityConfig.java
                 })
                 .and()
                 .formLogin().loginPage("/login.html").loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password")
@@ -104,29 +103,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(jsonLoginUrlAuthenticationEntryPoint).accessDeniedHandler(authenticationAccessDeniedHandler);
-=======
-                }).and().formLogin().loginPage("/login.html").loginProcessingUrl("/login").usernameParameter("username").passwordParameter("password").permitAll().failureHandler((httpServletRequest, httpServletResponse, e) -> {
-            httpServletResponse.setContentType("application/json;charset=utf-8");
-            PrintWriter out = httpServletResponse.getWriter();
-            ObjectMapper om = new ObjectMapper();
-            if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
-                out.write(om.writeValueAsString(R.error(ResponseEnums.INVALID_USER_OR_PASSWORD)));
-            } else if (e instanceof DisabledException) {
-                out.write(om.writeValueAsString(R.error(ResponseEnums.USER_DISABLED)));
-            } else {
-                out.write(om.writeValueAsString(R.error(ResponseEnums.LOGIN_FAILED)));
-            }
-            out.flush();
-            out.close();
-        }).successHandler((httpServletRequest, httpServletResponse, authentication) -> {
-            httpServletResponse.setContentType("application/json;charset=utf-8");
-            PrintWriter out = httpServletResponse.getWriter();
-            ObjectMapper objectMapper = new ObjectMapper();
-            String s = objectMapper.writeValueAsString(R.ok().put("user", UserUtils.getCurrentUser()));
-            out.write(s);
-            out.flush();
-            out.close();
-        }).and().logout().permitAll().and().csrf().disable().exceptionHandling().accessDeniedHandler(authenticationAccessDeniedHandler);
->>>>>>> c9a9ca4ddf3cabbdbf25c261978217cc5cfc9d6d:ytjr-api/src/main/java/com/ytjr/api/security/WebSecurityConfig.java
     }
 }

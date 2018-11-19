@@ -25,6 +25,12 @@ public class FinancialServiceException extends RuntimeException {
         this.msg = enums.getMsg();
     }
 
+    public FinancialServiceException(ResponseEnums enums, Throwable e) {
+        super(enums.getMsg(), e);
+        this.code = enums.getCode();
+        this.msg = enums.getMsg();
+    }
+
     public FinancialServiceException(String code, String msg) {
         super(msg);
         this.code = code;
