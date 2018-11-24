@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ytjr.api.utils.R;
 import com.ytjr.api.utils.UserUtils;
 import com.ytjr.common.enums.ResponseEnums;
+import com.ytjr.entity.api.UserEntity;
 import com.ytjr.iservice.api.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -93,7 +94,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
                     httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     PrintWriter out = httpServletResponse.getWriter();
-                    String s = om.writeValueAsString(R.ok().put("user", UserUtils.getCurrentUser()));
+                    UserEntity user = UserUtils.getCurrentUser();
+                    user.setPassword(null);
+                    String s = om.writeValueAsString(R.ok().put("user", user));
                     out.write(s);
                     out.flush();
                     out.close();
