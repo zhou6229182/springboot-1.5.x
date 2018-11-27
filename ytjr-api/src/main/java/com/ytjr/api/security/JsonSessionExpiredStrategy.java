@@ -6,10 +6,10 @@ import com.ytjr.api.utils.R;
 import com.ytjr.common.enums.ResponseEnums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredEvent;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,32 +18,32 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 未登录处理
+ * session失效处理
  */
 @Component
-public class JsonLoginUrlAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class JsonSessionExpiredStrategy implements SessionInformationExpiredStrategy {
 
     private ObjectMapper om;
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Autowired
-    public JsonLoginUrlAuthenticationEntryPoint(ObjectMapper om) {
+    public JsonSessionExpiredStrategy(ObjectMapper om) {
         this.om = om;
     }
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        if (AjaxUtils.isAjaxRequest(request)) {//判断未登录并且为ajax请求时返回JSON
+    public void onExpiredSessionDetected(SessionInformationExpiredEvent sessionInformationExpiredEvent) throws IOException {
+        HttpServletRequest request = sessionInformationExpiredEvent.getRequest();
+        HttpServletResponse response = sessionInformationExpiredEvent.getResponse();
+        if (AjaxUtils.isAjaxRequest(request)) {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             PrintWriter out = response.getWriter();
-            out.write(om.writeValueAsString(R.error(ResponseEnums.NOLOGIN)));
+            out.write(om.writeValueAsString(R.error(ResponseEnums.SESSION_EXPIRED)));
             out.flush();
             out.close();
         } else {
             redirectStrategy.sendRedirect(request, response, "/login.html");
         }
     }
-
 }
-

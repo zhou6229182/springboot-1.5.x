@@ -3,7 +3,6 @@ package com.ytjr.api.security;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ytjr.api.utils.R;
-import com.ytjr.api.utils.UserUtils;
 import com.ytjr.common.enums.ResponseEnums;
 import com.ytjr.entity.api.UserEntity;
 import com.ytjr.iservice.api.IUserService;
@@ -18,6 +17,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
@@ -38,20 +39,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JsonLoginUrlAuthenticationEntryPoint jsonLoginUrlAuthenticationEntryPoint;
 
+    private JsonSessionExpiredStrategy jsonSessionExpiredStrategy;
+
     private ObjectMapper om;
 
     @Autowired
-    public WebSecurityConfig(UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource, UrlAccessDecisionManager urlAccessDecisionManager, AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler, JsonLoginUrlAuthenticationEntryPoint jsonLoginUrlAuthenticationEntryPoint, ObjectMapper om) {
+    public WebSecurityConfig(UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource, UrlAccessDecisionManager urlAccessDecisionManager, AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler, JsonLoginUrlAuthenticationEntryPoint jsonLoginUrlAuthenticationEntryPoint, JsonSessionExpiredStrategy jsonSessionExpiredStrategy, ObjectMapper om) {
         this.urlFilterInvocationSecurityMetadataSource = urlFilterInvocationSecurityMetadataSource;
         this.urlAccessDecisionManager = urlAccessDecisionManager;
         this.authenticationAccessDeniedHandler = authenticationAccessDeniedHandler;
         this.jsonLoginUrlAuthenticationEntryPoint = jsonLoginUrlAuthenticationEntryPoint;
+        this.jsonSessionExpiredStrategy = jsonSessionExpiredStrategy;
         this.om = om;
     }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() { //密码加密
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     @Override
@@ -106,6 +115,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(jsonLoginUrlAuthenticationEntryPoint).accessDeniedHandler(authenticationAccessDeniedHandler);
+                .exceptionHandling().authenticationEntryPoint(jsonLoginUrlAuthenticationEntryPoint).accessDeniedHandler(authenticationAccessDeniedHandler)
+                .and()
+                .sessionManagement()
+                //一个账户能登录多次
+                .maximumSessions(-1)
+                .sessionRegistry(sessionRegistry())
+                //session过期事件管理
+                .expiredSessionStrategy(jsonSessionExpiredStrategy);
     }
 }
