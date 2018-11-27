@@ -120,7 +120,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 //-1一个账户能登录多次(使用UserDetails的equals和hashCode方法判断是否为同一用户)
                 .maximumSessions(-1)
-                //session超出数量时的动作 true代表限制后来的登录 false代表强制之前退出
+                //session超出数量时的动作 true代表限制后来的登录，登录时会爆SessionAuthenticationException错误 false代表强制之前退出
                 //.maxSessionsPreventsLogin(true)
                 .sessionRegistry(sessionRegistry())
                 //session过期事件管理
