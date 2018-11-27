@@ -21,6 +21,7 @@ public class UserEntity implements Serializable, UserDetails {
     private String username;
     private Integer enable;
     private List<RoleEntity> roles;
+    private List<MenuEntity> menus;
 
     public Long getId() {
         return id;
@@ -107,5 +108,13 @@ public class UserEntity implements Serializable, UserDetails {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public List<MenuEntity> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<MenuEntity> menus) {
+        this.menus = menus;
     }
 }

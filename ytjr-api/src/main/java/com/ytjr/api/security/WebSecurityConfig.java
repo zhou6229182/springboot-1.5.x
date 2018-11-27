@@ -94,7 +94,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
                     httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                     PrintWriter out = httpServletResponse.getWriter();
-                    UserEntity user = UserUtils.getCurrentUser();
+                    UserEntity user = (UserEntity) authentication.getPrincipal();
                     user.setPassword(null);
                     String s = om.writeValueAsString(R.ok().put("user", user));
                     out.write(s);
