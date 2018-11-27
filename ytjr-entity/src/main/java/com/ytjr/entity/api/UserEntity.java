@@ -21,7 +21,6 @@ public class UserEntity implements Serializable, UserDetails {
     private String username;
     private Integer enable;
     private List<RoleEntity> roles;
-    private List<MenuEntity> menus;
 
     public Long getId() {
         return id;
@@ -110,11 +109,17 @@ public class UserEntity implements Serializable, UserDetails {
         this.birthday = birthday;
     }
 
-    public List<MenuEntity> getMenus() {
-        return menus;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof UserEntity) {
+            return ((UserEntity) obj).getId().equals(this.id);
+        } else {
+            return false;
+        }
     }
 
-    public void setMenus(List<MenuEntity> menus) {
-        this.menus = menus;
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
     }
 }
