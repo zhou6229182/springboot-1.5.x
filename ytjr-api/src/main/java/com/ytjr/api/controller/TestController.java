@@ -68,5 +68,10 @@ public class TestController {
             }
         }
         return R.ok();
+        /*SessionInformation sessionInformation = sessionRegistry.getSessionInformation(sessionId);
+        if (sessionInformation != null && !sessionInformation.isExpired()) {
+            sessionInformation.expireNow();
+        }
+        return R.ok();*/
     }
 }
