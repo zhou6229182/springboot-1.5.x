@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/login.html", "/index.html", "/static/**");
+        web.ignoring().antMatchers("/login.html", "/index.html", "/fonts/**", "/captcha.jpg");
     }
 
     @Override
@@ -113,8 +113,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll()
                 .and()
+                .cors()//开启跨域
+                .and()
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(jsonLoginUrlAuthenticationEntryPoint).accessDeniedHandler(authenticationAccessDeniedHandler)
+                .and()
+                .headers()
+                .frameOptions()
+                .disable()
                 .and()
                 .sessionManagement()
                 //-1一个账户能登录多次(使用UserDetails的equals和hashCode方法判断是否为同一用户)
