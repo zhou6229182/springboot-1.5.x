@@ -20,6 +20,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.ytjr</groupId>
             <artifactId>ytjr-common</artifactId>
         </dependency>

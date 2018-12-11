@@ -28,13 +28,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.gitee.reger</groupId>
             <artifactId>spring-boot-starter-dubbo</artifactId>
         </dependency>
@@ -61,6 +54,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.ytjr</groupId>
             <artifactId>ytjr-common</artifactId>
         </dependency>
@@ -79,16 +77,19 @@
             <groupId>com.ytjr</groupId>
             <artifactId>ytjr-utils</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.axet</groupId>
+            <artifactId>kaptcha</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>ytjr-api</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <dependencies>
-
-                </dependencies>
                 <configuration>
                     <fork>true</fork>
                 </configuration>
