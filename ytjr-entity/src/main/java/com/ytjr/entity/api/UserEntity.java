@@ -42,13 +42,11 @@ public class UserEntity implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        if (roles != null) {
-            for (RoleEntity role : this.roles) {
-                authorities.add(new SimpleGrantedAuthority(role.getName()));
-            }
+        if (roles != null && !roles.isEmpty()) {
+            return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
         }
-        return authorities;
     }
 
     public String getPassword() {
