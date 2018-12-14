@@ -23,11 +23,8 @@ public class FinancialServiceExceptionHandler {
     @ExceptionHandler(FinancialServiceException.class)
     public R handleFinancialException(FinancialServiceException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        logger.error("发现异常 url ={} ,message ={}", requestURI, e.getMsg());
-        R r = new R();
-        r.put("code", e.getCode());
-        r.put("msg", e.getMessage());
-        return r;
+        logger.error("发现异常 url ={} ,message ={}", requestURI, e.getMessage());
+        return R.error(e.getCode(), e.getMessage());
     }
 
     /**
@@ -36,7 +33,7 @@ public class FinancialServiceExceptionHandler {
     @ExceptionHandler(value = {BindException.class})
     public R badRequest(BindException e) {
         logger.error("请求参数绑定错误,message ={}", e.getMessage());
-        return R.error(ResponseEnums.BAD_REQUEST.getCode(), ResponseEnums.BAD_REQUEST.getMsg());
+        return R.error(ResponseEnums.BAD_REQUEST);
     }
 
     @ExceptionHandler(DuplicateKeyException.class)

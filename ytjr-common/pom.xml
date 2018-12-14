@@ -20,8 +20,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.ytjr</groupId>
-            <artifactId>ytjr-utils</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 

@@ -54,11 +54,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.ytjr</groupId>
             <artifactId>ytjr-common</artifactId>
         </dependency>
