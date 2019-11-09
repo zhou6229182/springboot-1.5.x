@@ -18,14 +18,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisConfig {
 
-    private ObjectMapper om;
-
     private JedisConnectionFactory factory;
 
     @Autowired
-    public RedisConfig(JedisConnectionFactory factory, ObjectMapper objectMapper) {
+    public RedisConfig(JedisConnectionFactory factory) {
         this.factory = factory;
-        this.om = objectMapper;
     }
 
     @Bean
@@ -42,6 +39,7 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
